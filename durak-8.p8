@@ -16,7 +16,7 @@ function _init()
 	-- init function pointers
 	--_up, _dp = _update_title_screen, _draw_title_screen
 	-- init function pointers
-	_up, _dp = _update_main, _draw_main
+	_up, _dp = _update_title_screen, _draw_title_screen
     -- init deck list
     deck=init_deck()
 end
@@ -71,6 +71,10 @@ function _draw_title_screen()
 	
 end
 
+function _draw_game()
+	cls(3)
+end
+
 function _draw_options()
 	cls(2)
 end
@@ -82,34 +86,6 @@ end
 --render utilities
 
 --draws a card
---utils
-
-function init_deck()
- local deck={}
- 
-	local suits={"h", "c", "s", "d"}
-	local ranks={2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}
- 
- for suit in all(suits) do
-  for rank in all(ranks) do
-	  local card={
-	 	 rank=rank,
-	 	 suit=suit
-	  }
-   add(deck, card)
-  end
- end
- return deck
-end
-
-function remove_card(s, r)
- for i in all(deck) do
-  if i.suit==s and i.rank==r then
-   print("deleted lol")
-   del(deck, i)
-  end
- end
-end
 
 function draw_card(rank, suit, x, y)
 	-- pink is transparent
@@ -154,20 +130,33 @@ function draw_ts_option(text, y, is_selected)
 	end
 end
 -->8
---updates
+--game utilities
 
-function _update_game()
-	
+function init_deck()
+ local deck={}
+ 
+	local suits={"h", "c", "s", "d"}
+	local ranks={2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}
+ 
+ for suit in all(suits) do
+  for rank in all(ranks) do
+	  local card={
+	 	 rank=rank,
+	 	 suit=suit
+	  }
+   add(deck, card)
+  end
+ end
+ return deck
 end
--->8
---draws
 
-function draw_game()
-	cls(3)
-	draw_card(1,  1, 20, 20)
-	draw_card(5,  2, 40, 20)
-	draw_card(11, 3, 20, 60)
-	draw_card(13, 4, 40, 60)
+function remove_card(s, r)
+ for i in all(deck) do
+  if i.suit==s and i.rank==r then
+   print("deleted lol")
+   del(deck, i)
+  end
+ end
 end
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
