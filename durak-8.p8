@@ -9,7 +9,7 @@ function _init()
 	rank_strs = " 23456789tjqka"
 	
 	-- init function pointers
-	_up, _dp = _update_main, _draw_main
+	_up, _dp = _update_game, _draw_game
 end
 
 function _update()
@@ -59,12 +59,12 @@ end
 -->8
 --draws
 
-function draw_game()
+function _draw_game()
 	cls(3)
-	draw_card(1,  1, 20, 20)
-	draw_card(5,  2, 40, 20)
-	draw_card(11, 3, 20, 60)
-	draw_card(13, 4, 40, 60)
+	draw_card(2,  1, 20, 20)
+	draw_card(6,  2, 40, 20)
+	draw_card(12, 3, 20, 60)
+	draw_card(14, 4, 40, 60)
 end
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
