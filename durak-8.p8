@@ -5,15 +5,13 @@ __lua__
 
 function _init()
 
+	-- modifiable options
+	m_options = {suit_index = 1, player_number = 2}
+
 	suit_skins = {{8, 8, 1, 1, 6}, {8, 10, 11, 12, 7}, {2, 2, 1, 1, 0}}
-	skin_index = 1
 	
-	suit_cols = suit_skins[skin_index]
 	-- hearts, diamonds, clubs, spades
 	rank_strs = " 23456789tjqka"
-	
-	--number of players
-	player_number=2
 	
 	-- title screen stuff
 	
@@ -62,28 +60,9 @@ function _update_options()
 	
 	handle_menu_inputs(2)
 
- --!!!! das ist ein bssl arsch	
-	if curr_option == 1 then
-		if btnp(➡️) then
-			skin_index += 1
-		end
-		if btnp(⬅️) then
-			skin_index -= 1
-		end
-		skin_index = (skin_index - 1) % 3 + 1
-		suit_cols = suit_skins[skin_index]
-	end
-
- --muss man optimieren
- --idee: alle optionen (falls spaeter noch welche kommen und erscheinen) in einen array speichern und durch nh loop abfragen und passend aendern
-	if curr_option == 2 then
-		if (btnp(➡️) and player_number<4) then
-			player_number += 1
-		end
-		if (btnp(⬅️) and player_number>2) then
-			player_number -= 1
-		end
- end
+	-- right now this takes more tokens, but it would be more optimized for more options
+	local mins, maxs, steps = {1, 2}, {3, 4}, {1, 1}
+ update_curr_option(curr_option, mins[curr_option], maxs[curr_option], steps[curr_option])
 	
 	if btnp(❎) then
 		_up = _update_title_screen
@@ -127,9 +106,9 @@ function _draw_options()
 	
 	-- card skin option
 	
-	draw_ts_option("card skin: "..skin_index, 80, curr_option==1, 15)
+	draw_ts_option("card skin: "..m_options.suit_index, 80, curr_option==1, 15)
 	
-	draw_ts_option("number of players: "..player_number, 100, curr_option==2, 15)
+	draw_ts_option("number of players: "..m_options.player_number, 100, curr_option==2, 15)
 end
 
 function _draw_tutorial()
@@ -141,6 +120,7 @@ end
 --draws a card
 
 function draw_card(card, x, y)
+	suit_cols = suit_skins[m_options.suit_index]
 	-- pink is transparent
 	palt(0, false)
 	palt(14, true)
@@ -219,6 +199,17 @@ function handle_menu_inputs(options)
 	if btnp(⬇️) then curr_option += 1 end
 	if btnp(⬆️) then curr_option -= 1 end
 	curr_option = (curr_option - 1) % options + 1
+end
+
+-- update selected option based on input
+function update_curr_option(idx, _min, _max, step)
+    local keys = {"suit_index", "player_number"}
+    local key = keys[idx]
+    if key then
+        if btnp(➡️) then m_options[key] += step end
+        if btnp(⬅️) then m_options[key] -= step end
+        m_options[key] = (m_options[key] - _min) % (_max - _min + 1) + _min
+    end
 end
 -->8
 -- init/create player
