@@ -78,15 +78,15 @@ end
 
 function _draw_title_screen()
 	cls(3)
-	color(1)
-	print_centered("durak-8", 8)
+	print_centered_shaded("durak-8", 8, 1, 12)
 	
 	local ts_options = {"pLAY", "oPTIONS", "tUTORIAL"}
 	
 	for i=1, #ts_options do
-		draw_ts_option(ts_options[i], 50+20*i, curr_option == i, 30)
+		draw_ts_option(ts_options[i], 30+20*i, curr_option == i, 30)
 	end
 	
+	print_centered_shaded("(C) timo & ivan 2026", 120, 9, 10)
 end
 
 function _draw_game()
