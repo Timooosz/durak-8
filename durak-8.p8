@@ -61,7 +61,8 @@ function _update_options()
 	_dp = _draw_options
 	
 	handle_menu_inputs(2)
-	
+
+ --!!!! das ist ein bssl arsch	
 	if curr_option == 1 then
 		if btnp(➡️) then
 			skin_index += 1
@@ -72,6 +73,17 @@ function _update_options()
 		skin_index = (skin_index - 1) % 3 + 1
 		suit_cols = suit_skins[skin_index]
 	end
+
+ --muss man optimieren
+ --idee: alle optionen (falls spaeter noch welche kommen und erscheinen) in einen array speichern und durch nh loop abfragen und passend aendern
+	if curr_option == 2 then
+		if (btnp(➡️) and player_number<4) then
+			player_number += 1
+		end
+		if (btnp(⬅️) and player_number>2) then
+			player_number -= 1
+		end
+ end
 	
 	if btnp(❎) then
 		_up = _update_title_screen
@@ -213,7 +225,7 @@ end
 
 function init_plr()
  hand={}
- return player
+ return hand
 end
 
 __gfx__
