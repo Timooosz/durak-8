@@ -12,6 +12,9 @@ function _init()
 	-- hearts, diamonds, clubs, spades
 	rank_strs = " 23456789tjqka"
 	
+	--number of players
+	player_number=2
+	
 	-- title screen stuff
 	
 	curr_option = 1
@@ -57,6 +60,8 @@ end
 function _update_options()
 	_dp = _draw_options
 	
+	handle_menu_inputs(2)
+	
 	if curr_option == 1 then
 		if btnp(➡️) then
 			skin_index += 1
@@ -88,7 +93,7 @@ function _draw_title_screen()
 	local ts_options = {"pLAY", "oPTIONS", "tUTORIAL"}
 	
 	for i=1, #ts_options do
-		draw_ts_option(ts_options[i], 50+20*i, curr_option == i)
+		draw_ts_option(ts_options[i], 50+20*i, curr_option == i, 30)
 	end
 	
 end
@@ -110,8 +115,9 @@ function _draw_options()
 	
 	-- card skin option
 	
-	draw_ts_option("card_skin: "..skin_index, 80, true)
+	draw_ts_option("card skin: "..skin_index, 80, curr_option==1, 15)
 	
+	draw_ts_option("number of players: "..player_number, 100, curr_option==2, 15)
 end
 
 function _draw_tutorial()
@@ -158,12 +164,12 @@ function print_centered_shaded(text, y, c1, c2)
 	print_centered(text, y-1)
 end
 
-function draw_ts_option(text, y, is_selected)
+function draw_ts_option(text, y, is_selected, p_x)
 	color(2)
 	print_centered(text, y)
 	if is_selected then
 		print_centered_shaded(text, y, 2, 8)
-		spr(70, 30, y-3)
+		spr(70, p_x, y-3)
 	end
 end
 -->8
@@ -202,6 +208,14 @@ function handle_menu_inputs(options)
 	if btnp(⬆️) then curr_option -= 1 end
 	curr_option = (curr_option - 1) % options + 1
 end
+-->8
+-- init/create player
+
+function init_plr()
+ hand={}
+ return player
+end
+
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
