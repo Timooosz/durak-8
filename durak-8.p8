@@ -93,6 +93,7 @@ end
 function _draw_game()
 	cls(3)
 	draw_deck_whole()
+	print_hand(1)
 end
 
 function _draw_options()
@@ -189,15 +190,6 @@ function init_deck()
  return deck
 end
 
-function remove_card(s, r)
- for i in all(deck) do
-  if i.suit==s and i.rank==r then
-   print("deleted lol")
-   del(deck, i)
-  end
- end
-end
-
 -- handle up and down presses in menues
 function handle_menu_inputs(options)
 	if btnp(⬇️) then curr_option += 1 end
@@ -214,6 +206,42 @@ function update_curr_option(idx, _min, _max, step)
         if btnp(⬅️) then m_options[key] -= step end
         m_options[key] = (m_options[key] - _min) % (_max - _min + 1) + _min
     end
+end
+
+--runs once atfer choosing play in menu
+function init_game()
+ -- init deck list
+ deck=init_deck()
+ --init players
+ plrs=create_plr()
+ 
+ --test zieh card
+	zieh_card(1, card("h", 5))
+	zieh_card(1, card("h", 7))
+end
+
+--manipulating players hand
+function remove_card(c)
+ for i in all(deck) do
+  if i.suit==c.suit and i.rank==c.rank then
+   print("deleted lol")
+   del(deck, i)
+  end
+ end
+end
+
+function card(s, r)
+ local card={suit, rank}
+ card.suit=s
+ card.rank=r
+ return card
+end
+
+function zieh_card(plr, c)
+ --add card to plr hand
+ add(plrs[plr], c)
+ --remove card from deck
+ remove_card(c)
 end
 -->8
 -- init/create player
@@ -237,26 +265,7 @@ end
 -->8
 -- test functions
 
-function zieh_card(plr, card)
- add(plrs[plr], card)
- --print plr.1 1st card (suit and weight)
- print(plrs[1][1][1])
- print(plrs[1][1][2])
- --remove card from deck
- remove_card("h", "5")
-end
-
---runs once atfer choosing play in menu
-function init_game()
- -- init deck list
- deck=init_deck()
- --init players
- plrs=create_plr()
- 
- --test zieh card
-	zieh_card(1, {"h", "5"})
-end
-
+--print whole deck (ugly)
 function draw_deck_whole()
  local _x=0
  local _y=0
@@ -270,6 +279,17 @@ function draw_deck_whole()
   end
  end
 end
+
+--print whole hand of plr
+function print_hand(plr)
+ _y=0
+ for i in all(plrs[plr]) do
+  print(i.suit, 0, 60+_y)
+  print(i.rank, 6, 60+_y)
+  _y+=8
+ end
+end
+
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
