@@ -13,8 +13,10 @@ function _init()
 	-- hearts, diamonds, clubs, spades
 	rank_strs = " 23456789tjqka"
 	
-	-- title screen stuff
+	--game options
+	player_number=2
 	
+	-- title screen stuff
 	curr_option = 1
 	options_ups = {_update_game, _update_options, _update_tutorial}
 		
@@ -22,8 +24,6 @@ function _init()
 	--_up, _dp = _update_title_screen, _draw_title_screen
 	-- init function pointers
 	_up, _dp = _update_title_screen, _draw_title_screen
-    -- init deck list
-  deck=init_deck()
 end
 
 function _update()
@@ -48,6 +48,7 @@ function _update_title_screen()
 	if btnp(🅾️) then
 		_up = options_ups[curr_option]
 		curr_option = 1
+		init_game()
 	end
 end
 
@@ -91,6 +92,7 @@ end
 
 function _draw_game()
 	cls(3)
+	draw_deck_whole()
 end
 
 function _draw_options()
@@ -170,7 +172,9 @@ end
 function init_deck()
  local deck={}
  
-	local suits={1, 2, 3, 4}
+	--local suits={1, 2, 3, 4}
+	local suits={"h", "s", "c", "d"}
+	
 	local ranks={2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}
  
  for suit in all(suits) do
@@ -219,6 +223,53 @@ function init_plr()
  return hand
 end
 
+--create a list of all players
+--(plr1 is playable)
+--(rest is bots)
+function create_plr()
+ plr_lst={}
+ for i=1, player_number do
+  plr=init_plr()
+  add(plr_lst, plr)
+ end
+ return plr_lst
+end
+-->8
+-- test functions
+
+function zieh_card(plr, card)
+ add(plrs[plr], card)
+ --print plr.1 1st card (suit and weight)
+ print(plrs[1][1][1])
+ print(plrs[1][1][2])
+ --remove card from deck
+ remove_card("h", "5")
+end
+
+--runs once atfer choosing play in menu
+function init_game()
+ -- init deck list
+ deck=init_deck()
+ --init players
+ plrs=create_plr()
+ 
+ --test zieh card
+	zieh_card(1, {"h", "5"})
+end
+
+function draw_deck_whole()
+ local _x=0
+ local _y=0
+ for i in all(deck) do
+  print(i.suit, _x, _y, 13)
+  print(i.rank, _x+4, _y, 2)
+  _x+=10
+  if(_x>120)do
+   _x=0
+   _y+=8
+  end
+ end
+end
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
