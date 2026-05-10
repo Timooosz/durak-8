@@ -93,10 +93,9 @@ end
 function _draw_game()
 	cls(3)
 	-- test func
-	draw_deck_whole()
-	print_hand(1, 0)
-	print_hand(2, 30)
-	print_hand(3, 60)
+	--draw_deck_whole()
+	--print_hand()
+	drw_hand()
 end
 
 function _draw_options()
@@ -173,26 +172,6 @@ end
 -->8
 --game utilities
 
-function init_deck()
- local deck={}
- 
-	--local suits={1, 2, 3, 4}
-	local suits={"h", "s", "c", "d"}
-	
-	local ranks={2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}
- 
- for suit in all(suits) do
-  for rank in all(ranks) do
-	  local card={
-	 	 rank=rank,
-	 	 suit=suit
-	  }
-   add(deck, card)
-  end
- end
- return deck
-end
-
 -- handle up and down presses in menues
 function handle_menu_inputs(options)
 	if btnp(⬇️) then curr_option += 1 end
@@ -228,14 +207,48 @@ function card(s, r)
  return card
 end
 
-function zieh_card(plr, c)
+--zieh rnd card from deck
+function zieh_card(plr)
+ _c=rnd(deck)
  --add card to plr hand
- add(plrs[plr], c)
+ add(plrs[plr], _c)
  --remove card from deck
- remove_card(c)
+ remove_card(_c)
+end
+
+
+--draw hand of plr
+--center??
+function drw_hand()
+ _x=0
+ for i in all(plrs[1]) do
+  draw_card(i, _x, 95)
+  _x+=20
+ end 
 end
 -->8
 -- init game
+
+function init_deck()
+ local deck={}
+ 
+	--local suits={1, 2, 3, 4}
+--	local suits={"h", "s", "c", "d"}
+	local suits={1, 2, 3, 4}
+	
+	local ranks={2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}
+ 
+ for suit in all(suits) do
+  for rank in all(ranks) do
+	  local card={
+	 	 rank=rank,
+	 	 suit=suit
+	  }
+   add(deck, card)
+  end
+ end
+ return deck
+end
 
 function init_plr()
  hand={}
@@ -264,7 +277,8 @@ function init_game()
 	--give each plr 6 cards
 	for i=1, #plrs do
 	 for j=1, 6 do
-  	drw_rnd_card(i)
+  	zieh_card(i)
+  	--drw_rnd_card(i)
 	 end
 	end
 end
@@ -303,10 +317,7 @@ function print_hand()
  end
 end
 
---draw random card from deck
-function drw_rnd_card(plr)
- zieh_card(plr, rnd(deck))
-end
+
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
