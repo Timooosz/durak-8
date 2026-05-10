@@ -92,8 +92,11 @@ end
 
 function _draw_game()
 	cls(3)
+	-- test func
 	draw_deck_whole()
-	print_hand(1)
+	print_hand(1, 0)
+	print_hand(2, 30)
+	print_hand(3, 60)
 end
 
 function _draw_options()
@@ -208,18 +211,6 @@ function update_curr_option(idx, _min, _max, step)
     end
 end
 
---runs once atfer choosing play in menu
-function init_game()
- -- init deck list
- deck=init_deck()
- --init players
- plrs=create_plr()
- 
- --test zieh card
-	zieh_card(1, card("h", 5))
-	zieh_card(1, card("h", 7))
-end
-
 --manipulating players hand
 function remove_card(c)
  for i in all(deck) do
@@ -244,7 +235,7 @@ function zieh_card(plr, c)
  remove_card(c)
 end
 -->8
--- init/create player
+-- init game
 
 function init_plr()
  hand={}
@@ -256,11 +247,26 @@ end
 --(rest is bots)
 function create_plr()
  plr_lst={}
- for i=1, player_number do
+ for i=1, m_options.player_number do
   plr=init_plr()
   add(plr_lst, plr)
  end
  return plr_lst
+end
+
+--runs once atfer choosing play in menu
+function init_game()
+ -- init deck list
+ deck=init_deck()
+ --init players
+ plrs=create_plr()
+
+	--give each plr 6 cards
+	for i=1, #plrs do
+	 for j=1, 6 do
+  	drw_rnd_card(i)
+	 end
+	end
 end
 -->8
 -- test functions
@@ -280,16 +286,27 @@ function draw_deck_whole()
  end
 end
 
---print whole hand of plr
-function print_hand(plr)
+--print whole hand of all plr
+function print_hand()
+ local _y=0
+ local _x=0
+ for _plr=1, 4 do 
+  --print player
+  print(_plr, _x, 50)
+  for i in all(plrs[_plr]) do
+   print(i.suit, _x, 60+_y)
+   print(i.rank, _x+6, 60+_y)
+   _y+=8
+  end
+ _x+=30
  _y=0
- for i in all(plrs[plr]) do
-  print(i.suit, 0, 60+_y)
-  print(i.rank, 6, 60+_y)
-  _y+=8
  end
 end
 
+--draw random card from deck
+function drw_rnd_card(plr)
+ zieh_card(plr, rnd(deck))
+end
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
