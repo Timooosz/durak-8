@@ -10,9 +10,9 @@ function _init()
 	-- modifiable options
 	m_options = {suit_index = 1, player_number = 2}
 
+	-- hearts, diamonds, clubs, spades
 	suit_skins = {{8, 8, 1, 1, 6}, {8, 10, 11, 12, 7}, {2, 2, 1, 1, 0}}
 	
-	-- hearts, diamonds, clubs, spades
 	rank_strs = " 23456789tjqka"
 	
 	--game options
@@ -22,8 +22,6 @@ function _init()
 	curr_option = 1
 	options_ups = {_update_game, _update_options, _update_tutorial}
 		
-	-- init function pointers
-	--_up, _dp = _update_title_screen, _draw_title_screen
 	-- init function pointers
 	_up, _dp = _update_title_screen, _draw_title_screen
 end
