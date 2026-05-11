@@ -42,18 +42,25 @@ end
 function _update_title_screen()
 
 	_dp = _draw_title_screen
+	
+	--player has started game or returned to main menu
+	--game would have to be reinitialized
+	has_game_init = false
 
 	handle_menu_inputs(3)
 	
 	if btnp(🅾️) then
 		_up = options_ups[curr_option]
 		curr_option = 1
-		init_game()
 	end
 end
 
 function _update_game()
 	_dp = _draw_game
+	if not has_game_init then
+		init_game()
+		has_game_init = true
+	end
 end
 
 function _update_options()
