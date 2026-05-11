@@ -92,9 +92,6 @@ end
 
 function _draw_game()
 	cls(3)
-	-- test func
-	--draw_deck_whole()
-	--print_hand()
 	drw_hand()
 end
 
@@ -190,11 +187,10 @@ function update_curr_option(idx, _min, _max, step)
     end
 end
 
---manipulating players hand
+--removing specific card from deck
 function remove_card(c)
  for i in all(deck) do
   if i.suit==c.suit and i.rank==c.rank then
-   print("deleted lol")
    del(deck, i)
   end
  end
@@ -209,7 +205,7 @@ end
 
 --zieh rnd card from deck
 function zieh_card(plr)
- _c=rnd(deck)
+ local _c=rnd(deck)
  --add card to plr hand
  add(plrs[plr], _c)
  --remove card from deck
@@ -217,7 +213,7 @@ function zieh_card(plr)
 end
 
 
---draw hand of plr
+--draw hand of plr1
 --center??
 function drw_hand()
  _x=0
@@ -233,7 +229,6 @@ function init_deck()
  local deck={}
  
 	--local suits={1, 2, 3, 4}
---	local suits={"h", "s", "c", "d"}
 	local suits={1, 2, 3, 4}
 	
 	local ranks={2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}
@@ -250,6 +245,9 @@ function init_deck()
  return deck
 end
 
+--idee: zu plr "fokus" hinzufuegen um anvisierte karte zu highliten
+--selbe mit "ausgewahlten" karten
+--(kann auch von bots benutzt werden)
 function init_plr()
  hand={}
  return hand
@@ -259,7 +257,7 @@ end
 --(plr1 is playable)
 --(rest is bots)
 function create_plr()
- plr_lst={}
+ local plr_lst={}
  for i=1, m_options.player_number do
   plr=init_plr()
   add(plr_lst, plr)
@@ -273,12 +271,10 @@ function init_game()
  deck=init_deck()
  --init players
  plrs=create_plr()
-
 	--give each plr 6 cards
 	for i=1, #plrs do
 	 for j=1, 6 do
   	zieh_card(i)
-  	--drw_rnd_card(i)
 	 end
 	end
 end
