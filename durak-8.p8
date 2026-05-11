@@ -5,6 +5,8 @@ __lua__
 
 function _init()
 
+	timer = 0
+
 	-- modifiable options
 	m_options = {suit_index = 1, player_number = 2}
 
@@ -28,6 +30,7 @@ end
 
 function _update()
 	_up()
+	timer += 1
 end
 
 function _draw()
@@ -57,9 +60,14 @@ end
 
 function _update_game()
 	_dp = _draw_game
+	-- only initialize game once
 	if not has_game_init then
 		init_game()
 		has_game_init = true
+	end
+	-- temporary
+	if btnp(🅾️) then
+		zieh_card(1)
 	end
 end
 
@@ -99,7 +107,7 @@ end
 
 function _draw_game()
 	cls(3)
-	drw_hand()
+	draw_hand()
 end
 
 function _draw_options()
@@ -152,6 +160,20 @@ function draw_card(card, x, y)
 	-- print symbol
 	spr(65 + card.suit, x+4, y+8)
 		
+end
+
+--draw hand of plr1
+function draw_hand()
+	local p = plrs[1]
+	-- ugly solution, kind of works
+	for i = 1, #p do
+		-- card position if aligned to right
+		local xr = 16 + i * 104 / max(1, #p) - 24
+		-- card position if aligned to left
+		local xl = 16 + (i - 1) * 104 / max(1, #p)
+		-- position at mean avg of both to ensure cards are on screen
+		draw_card(p[i], flr((xl + xr) / 2), 95)
+	end
 end
 
 function print_centered(text, y)
@@ -217,17 +239,6 @@ function zieh_card(plr)
  add(plrs[plr], _c)
  --remove card from deck
  remove_card(_c)
-end
-
-
---draw hand of plr1
---center??
-function drw_hand()
- _x=0
- for i in all(plrs[1]) do
-  draw_card(i, _x, 95)
-  _x+=20
- end 
 end
 -->8
 -- init game
