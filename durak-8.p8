@@ -133,6 +133,9 @@ function _draw_options()
 	draw_ts_option("card skin: "..m_options.suit_index, 80, curr_option==1, 15)
 	
 	draw_ts_option("number of players: "..m_options.player_number, 100, curr_option==2, 15)
+
+
+	print_keybind("return", 8, 118, 1, 0)
 end
 
 function _draw_tutorial()
@@ -196,6 +199,12 @@ function print_centered_shaded(text, y, c1, c2)
 	print_centered(text, y-1)
 end
 
+function print_keybind(text, x, y, col, button)
+	spr(82 + button, x, y)
+	color(col)
+	print(text, x+10, y+2)
+end
+
 function draw_ts_option(text, y, is_selected, p_x)
 	color(2)
 	print_centered(text, y)
@@ -246,7 +255,7 @@ end
 
 -- update selected option based on input
 function update_curr_option(idx, _min, _max, step)
-    local keys = {"suit_index", "player_number", "g_selected_card"}
+    local keys = {"suit_index", "player_number"}
     local key = keys[idx]
     if key then
         if btnp(➡️) then m_options[key] += step end
