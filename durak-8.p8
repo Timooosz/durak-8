@@ -127,10 +127,10 @@ end
 
 function _draw_game()
 	cls(3)
-	draw_hand()
 	draw_back()
+	draw_hand()
 	draw_deck()
-	print_deck_whole()
+	--print_deck_whole()
 end
 
 function _draw_options()
@@ -192,12 +192,12 @@ end
 function draw_hand()
 	local p = plrs[1]
 	
-	local _y=95
+	local _y=100
 	-- ugly solution, kind of works
 	for i = 1, #p do
 		if i~=focus then
 			-- card position if aligned to right
-			local xr = 16 + i * 104 / max(1, #p) - 24
+			local xr = i * 104 / max(1, #p) - 8
 			-- card position if aligned to left
 			local xl = 16 + (i - 1) * 104 / max(1, #p)
 			-- position at mean avg of both to ensure cards are on screen
@@ -205,7 +205,7 @@ function draw_hand()
 		end
 	end
 	local i = focus
-	local xr = 16 + i * 104 / max(1, #p) - 24
+	local xr = i * 104 / max(1, #p) - 8
 			-- card position if aligned to left
 	local xl = 16 + (i - 1) * 104 / max(1, #p)
 			-- position at mean avg of both to ensure cards are on screen
@@ -240,18 +240,33 @@ end
 
 --draw back of card
 function draw_back()
- local _x_pos={0, 52, 104}
- local _y_pos={52, 0, 52}
+ local _x_pos={0, 0, 52, 104}
+ local _y_pos={0, 52, 4, 52}
 	-- pink is transparent
 	palt(0, false)
 	palt(14, true)
 
  --centerd magie shit muss hir
- for i=1, #plrs-1 do
- 	if i==2 do
- 	 spr(71, _x_pos[i], _y_pos[i], 2, 3)
+ for p=2, #plrs do
+ 	local _plr = plrs[p]
+ 	if p==3 do
+ 		for i=1,#_plr do
+ 	 	-- card position if aligned to right
+				local xr = i * 88 / max(1, #_plr) - 8
+				-- card position if aligned to left
+				local xl = 32 + (i - 1) * 88 / max(1, #_plr)
+				-- position at mean avg of both to ensure cards are on screen
+				spr(71, flr((xl + xr) / 2), _y_pos[p], 2, 3)
+ 		end
  	else
-  	spr(73, _x_pos[i], _y_pos[i], 3, 2)
+  	for i=1,#_plr do
+ 	 	-- card position if aligned to right
+				local yr = i * 88 / max(1, #_plr) - 8
+				-- card position if aligned to left
+				local yl = 32 + (i - 1) * 88 / max(1, #_plr)
+				-- position at mean avg of both to ensure cards are on screen
+				spr(73, _x_pos[p], flr((yl + yr) / 2), 3, 2)
+ 		end
   end
  end
 end
