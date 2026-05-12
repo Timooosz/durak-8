@@ -67,6 +67,9 @@ function _update_game()
 		has_game_init = true
 	end
 	-- temporary
+	
+	
+	
 	if btnp(🅾️) then
 		zieh_card(1)
 	end
@@ -243,7 +246,7 @@ end
 
 -- update selected option based on input
 function update_curr_option(idx, _min, _max, step)
-    local keys = {"suit_index", "player_number"}
+    local keys = {"suit_index", "player_number", "g_selected_card"}
     local key = keys[idx]
     if key then
         if btnp(➡️) then m_options[key] += step end
