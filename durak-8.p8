@@ -25,10 +25,19 @@ function _init()
 	-- init function pointers
 	_up, _dp = _update_title_screen, _draw_title_screen
 
- --selected cards (in pos)
- sel_crds={}
+ --sel/atk/def cards
+ sel_cards={}
+ atk_cards={}
+ def_cards={}
+ 
+ --wer ist dran???
+ turn=1
+ 
+ --focus der ausgewahlten karte
+ focus=1
 end
 
+--ハッサン
 function _update()
 	_up()
 	timer += 1
@@ -67,9 +76,6 @@ function _update_game()
 		has_game_init = true
 	end
 	-- temporary
-	
-	
-	
 	if btnp(🅾️) then
 		zieh_card(1)
 	end
@@ -283,7 +289,7 @@ end
 --zieh rnd card from deck
 function zieh_card(plr)
  local _c=deck[#deck]
- if _c==nil do return end
+ if #deck==0 do return end
  --add card to plr hand
  add(plrs[plr], _c)
  --remove card from deck
@@ -316,7 +322,7 @@ end
 --selbe mit "ausgewahlten" karten
 --(kann auch von bots benutzt werden)
 function init_plr()
- hand={}
+ local hand={}
  return hand
 end
 
