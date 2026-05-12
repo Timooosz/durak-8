@@ -75,6 +75,16 @@ function _update_game()
 		init_game()
 		has_game_init = true
 	end
+	
+	if btnp(⬅️) then
+		focus -= 1
+	end
+	if btnp(➡️) then
+		focus += 1
+	end
+	
+	focus = (focus - 1) % #plrs[1] + 1
+	
 	-- temporary
 	if btnp(🅾️) then
 		zieh_card(1)
@@ -185,13 +195,21 @@ function draw_hand()
 	local _y=95
 	-- ugly solution, kind of works
 	for i = 1, #p do
-		-- card position if aligned to right
-		local xr = 16 + i * 104 / max(1, #p) - 24
-		-- card position if aligned to left
-		local xl = 16 + (i - 1) * 104 / max(1, #p)
-		-- position at mean avg of both to ensure cards are on screen
-		draw_card(p[i], flr((xl + xr) / 2), _y)
+		if i~=focus then
+			-- card position if aligned to right
+			local xr = 16 + i * 104 / max(1, #p) - 24
+			-- card position if aligned to left
+			local xl = 16 + (i - 1) * 104 / max(1, #p)
+			-- position at mean avg of both to ensure cards are on screen
+			draw_card(p[i], flr((xl + xr) / 2), _y)
+		end
 	end
+	local i = focus
+	local xr = 16 + i * 104 / max(1, #p) - 24
+			-- card position if aligned to left
+	local xl = 16 + (i - 1) * 104 / max(1, #p)
+			-- position at mean avg of both to ensure cards are on screen
+	draw_card(p[i], flr((xl + xr) / 2), _y - 8)
 end
 
 function print_centered(text, y)
