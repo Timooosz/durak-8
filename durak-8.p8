@@ -87,7 +87,8 @@ function _update_game()
 	
 	-- temporary
 	if btnp(🅾️) then
-		zieh_card(1)
+		select_card(1)
+		--zieh_card(1)
 	end
 end
 
@@ -130,6 +131,8 @@ function _draw_game()
 	draw_back()
 	draw_hand()
 	draw_deck()
+	--test functions:
+	print_sel_cards()
 	--print_deck_whole()
 end
 
@@ -328,6 +331,14 @@ function zieh_card(plr)
  --remove card from deck
  remove_card(_c)
 end
+
+function select_card(_plr)
+ local hand=plrs[_plr]
+ local _c=card(1, 1)
+ _c.suit=hand[focus].suit
+ _c.rank=hand[focus].rank
+ add(sel_cards, _c)
+end 
 -->8
 -- init game
 
@@ -387,6 +398,17 @@ function init_game()
 	 end
 	end
 end
+
+--randomize deck
+function shuffle_deck()
+ --local _len=#deck
+ for i=1, #deck do
+  local _rnd=flr(rnd(#deck))
+  local _temp=deck[i]
+  deck[i]=deck[_rnd]
+  deck[_rnd]=_temp
+ end
+end
 -->8
 -- test functions
 
@@ -422,14 +444,14 @@ function print_hand()
  end
 end
 
---randomize deck
-function shuffle_deck()
- --local _len=#deck
- for i=1, #deck do
-  local _rnd=flr(rnd(#deck))
-  local _temp=deck[i]
-  deck[i]=deck[_rnd]
-  deck[_rnd]=_temp
+function print_sel_cards()
+ local _y=0
+ local _x=0
+ if #sel_cards==0 do return end
+ for i in all(sel_cards) do
+  print(i.suit, _x, _y)
+  print(i.rank, _x, _y+8)
+  _x+=12
  end
 end
 
