@@ -165,13 +165,14 @@ end
 
 --draws a card
 
-function draw_card(card, x, y)
+function draw_card(card, x, y, sel)
 	suit_cols = suit_skins[m_options.suit_index]
 	-- pink is transparent
 	palt(0, false)
 	palt(14, true)
 	--print card base
 	pal(7, suit_cols[5])
+	if sel then pal(5, 8 + flr(timer / 8) % 2) end
 	spr(64, x, y, 2, 3)
 	
 	-- 1: hearts, 2: diamonds, 3: clubs, 4: spades
@@ -188,7 +189,7 @@ function draw_card(card, x, y)
 	pal(13, col)
 	-- print symbol
 	spr(65 + card.suit, x+4, y+8)
-		
+	pal(5, 5)
 end
 
 --draw hand of plr1
@@ -196,23 +197,36 @@ function draw_hand()
 	local p = plrs[1]
 	
 	local _y=100
+	local _sel = false
+	
 	-- ugly solution, kind of works
 	for i = 1, #p do
+		_y=100
+		_sel = false
+		if is_selected(p[i]) then
+				_y -= 4
+				_sel = true
+		end
+	
 		if i~=focus then
+			
 			-- card position if aligned to right
 			local xr = i * 104 / max(1, #p) - 8
 			-- card position if aligned to left
 			local xl = 16 + (i - 1) * 104 / max(1, #p)
 			-- position at mean avg of both to ensure cards are on screen
-			draw_card(p[i], flr((xl + xr) / 2), _y)
+			draw_card(p[i], flr((xl + xr) / 2), _y, _sel)
 		end
 	end
 	local i = focus
+	if is_selected(p[i]) then
+		_sel = true
+	end
 	local xr = i * 104 / max(1, #p) - 8
 			-- card position if aligned to left
 	local xl = 16 + (i - 1) * 104 / max(1, #p)
 			-- position at mean avg of both to ensure cards are on screen
-	draw_card(p[i], flr((xl + xr) / 2), _y - 8)
+	draw_card(p[i], flr((xl + xr) / 2), _y - 8, _sel)
 end
 
 function print_centered(text, y)
@@ -339,6 +353,19 @@ function select_card(_plr)
  _c.rank=hand[focus].rank
  add(sel_cards, _c)
 end 
+
+function is_selected(this)
+	for other in all(sel_cards) do
+		if compare_cards(this, other) then
+			return true
+		end 
+	end
+	return false
+end
+
+function compare_cards(a, b)
+	return a.rank == b.rank and a.suit == b.suit
+end
 -->8
 -- init game
 
