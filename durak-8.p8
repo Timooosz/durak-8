@@ -192,41 +192,20 @@ function draw_card(card, x, y, sel)
 	pal(5, 5)
 end
 
---draw hand of plr1
+function card_x(i, n)
+    return flr(4 + (2*i - 1) * 52 / n)
+end
+
 function draw_hand()
-	local p = plrs[1]
-	
-	local _y=100
-	local _sel = false
-	
-	-- ugly solution, kind of works
-	for i = 1, #p do
-		_y=100
-		_sel = false
-		if is_selected(p[i]) then
-				_y -= 4
-				_sel = true
-		end
-	
-		if i~=focus then
-			
-			-- card position if aligned to right
-			local xr = i * 104 / max(1, #p) - 8
-			-- card position if aligned to left
-			local xl = 16 + (i - 1) * 104 / max(1, #p)
-			-- position at mean avg of both to ensure cards are on screen
-			draw_card(p[i], flr((xl + xr) / 2), _y, _sel)
-		end
-	end
-	local i = focus
-	if is_selected(p[i]) then
-		_sel = true
-	end
-	local xr = i * 104 / max(1, #p) - 8
-			-- card position if aligned to left
-	local xl = 16 + (i - 1) * 104 / max(1, #p)
-			-- position at mean avg of both to ensure cards are on screen
-	draw_card(p[i], flr((xl + xr) / 2), _y - 8, _sel)
+    local p = plrs[1]
+    local n = #p
+    for i = 1, n do
+        if i ~= focus then
+            local y = is_selected(p[i]) and 96 or 100
+            draw_card(p[i], card_x(i, n), y, is_selected(p[i]))
+        end
+    end
+    draw_card(p[focus], card_x(focus, n), 92, is_selected(p[focus]))
 end
 
 function print_centered(text, y)
@@ -257,35 +236,24 @@ end
 
 --draw back of card
 function draw_back()
- local _x_pos={0, 0, 52, 104}
- local _y_pos={0, 52, 4, 52}
-	-- pink is transparent
-	palt(0, false)
-	palt(14, true)
-
- --centerd magie shit muss hir
- for p=2, #plrs do
- 	local _plr = plrs[p]
- 	if p==3 do
- 		for i=1,#_plr do
- 	 	-- card position if aligned to right
-				local xr = i * 88 / max(1, #_plr) - 8
-				-- card position if aligned to left
-				local xl = 32 + (i - 1) * 88 / max(1, #_plr)
-				-- position at mean avg of both to ensure cards are on screen
-				spr(71, flr((xl + xr) / 2), _y_pos[p], 2, 3)
- 		end
- 	else
-  	for i=1,#_plr do
- 	 	-- card position if aligned to right
-				local yr = i * 88 / max(1, #_plr) - 8
-				-- card position if aligned to left
-				local yl = 32 + (i - 1) * 88 / max(1, #_plr)
-				-- position at mean avg of both to ensure cards are on screen
-				spr(73, _x_pos[p], flr((yl + yr) / 2), 3, 2)
- 		end
-  end
- end
+    palt(0, false)
+    palt(14, true)
+    
+    local x_pos, y_pos = {0, 0, 52, 104}, {0, 52, 4, 52}
+    
+    for p = 2, #plrs do
+        local n = #plrs[p]
+        local is_p3 = p == 3
+        
+        for i = 1, n do
+            local pos = flr(12 + (2*i - 1) * 44 / n)
+            if is_p3 then
+                spr(71, pos, y_pos[p], 2, 3)
+            else
+                spr(73, x_pos[p], pos, 3, 2)
+            end
+        end
+    end
 end
 
 --draw deck with trumpf 
