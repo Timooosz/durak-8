@@ -90,6 +90,9 @@ function _update_game()
 		select_card(1)
 		--zieh_card(1)
 	end
+	if btnp(❎) then
+	 return_card()
+	end
 end
 
 function _update_options()
@@ -319,8 +322,25 @@ function select_card(_plr)
  local _c=card(1, 1)
  _c.suit=hand[focus].suit
  _c.rank=hand[focus].rank
- add(sel_cards, _c)
-end 
+ for i=1, #sel_cards do
+  if compare_cards(_c, sel_cards[i]) then
+   return
+  end  
+ end
+ if #sel_cards==0 then
+  add(sel_cards, _c)
+ else
+  if _c.rank==sel_cards[1].rank then
+   add(sel_cards, _c)
+  end
+ end
+end
+
+--will nicht funktionieren junge
+function return_card()
+ local hand=plrs[1]
+ del(sel_cards, card(hand[focus].suit, hand[focus].rank))
+end
 
 function is_selected(this)
 	for other in all(sel_cards) do
