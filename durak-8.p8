@@ -134,8 +134,11 @@ function _draw_game()
 	draw_back()
 	draw_hand()
 	draw_deck()
-	--test functions:
-	print_sel_cards()
+	
+	handle_print_keybind()
+	
+	-- test functions:
+	--print_sel_cards()
 	--print_deck_whole()
 end
 
@@ -474,6 +477,14 @@ function print_sel_cards()
  end
 end
 
+function handle_print_keybind()
+	if is_selected(plrs[1][focus]) then
+  print_keybind("play", 26, 60, 1, 0)
+  print_keybind("ret", 26, 68, 1, 1)
+ else
+  print_keybind("sel", 26, 60, 1, 0)
+ end
+end
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
