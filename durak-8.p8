@@ -325,7 +325,7 @@ function select_card(_plr)
  for i=1, #sel_cards do
   if compare_cards(_c, sel_cards[i]) then
    return
-  end  
+  end
  end
  if #sel_cards==0 then
   add(sel_cards, _c)
@@ -336,10 +336,14 @@ function select_card(_plr)
  end
 end
 
---will nicht funktionieren junge
+--retrun card back in hand
 function return_card()
- local hand=plrs[1]
- del(sel_cards, card(hand[focus].suit, hand[focus].rank))
+ local c=plrs[1][focus]
+ for i in all(sel_cards) do
+  if i.suit==c.suit and i.rank==c.rank then
+   del(sel_cards, i)
+  end
+ end
 end
 
 function is_selected(this)
