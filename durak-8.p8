@@ -214,6 +214,13 @@ function draw_hand()
     draw_card(p[focus], card_x(focus, n), 92, is_selected(p[focus]))
 end
 
+function print_shaded(text, x, y, c1, c2)
+	color(c1)
+	print(text, x, y)
+	color(c2)
+	print(text, x, y-1)
+end
+
 function print_centered(text, y)
 	print(text, 64 - (#text*2) , y)
 end
@@ -270,8 +277,12 @@ function draw_deck()
  end
  --draw deck
  if deck[2]!=nil do
- 	spr(74, 52, 52, 3, 2)
+ 	local height = flr(#deck / 10)
+ 	for i=0,height do
+ 		spr(74, 52, 52-i, 3, 2)
+ 	end
  end
+ print_shaded("X"..#deck, 80, 55, 0, 6)
 end
 -->8
 --game utilities
@@ -479,10 +490,10 @@ end
 
 function handle_print_keybind()
 	if is_selected(plrs[1][focus]) then
-  print_keybind("play", 26, 60, 1, 0)
-  print_keybind("ret", 26, 68, 1, 1)
+  print_keybind("play", 26, 72, 1, 0)
+  print_keybind("ret", 26, 81, 1, 1)
  else
-  print_keybind("sel", 26, 60, 1, 0)
+  print_keybind("sel", 26, 80, 1, 0)
  end
 end
 __gfx__
